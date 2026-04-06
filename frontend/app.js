@@ -1,8 +1,5 @@
 // ─── Configuration ───
-const API_URL = window.location.hostname === "localhost" 
-    ? "http://localhost:5000" 
-    : "/api";
-
+const API_URL = "https://skin-cancer-backend-izl4.onrender.com";
 // ─── DOM Elements ───
 const dropZone = document.getElementById("dropZone");
 const fileInput = document.getElementById("fileInput");
