@@ -1,0 +1,24 @@
+﻿# Model files (ignore local copy, will download from HF)
+backend/model/*.keras
+backend/model_cache/
+
+# Virtual Environment
+backend/venv/
+venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log

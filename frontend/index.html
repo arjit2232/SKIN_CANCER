@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skin Cancer Detection - AI Diagnostic Tool</title>
+    <meta name="description" content="AI-powered skin cancer detection tool for early diagnosis of melanoma and other skin lesions">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- ─── Medical Disclaimer Banner ─── -->
+        <div class="disclaimer-banner">
+            <i class="fas fa-exclamation-triangle"></i>
+            <p><strong>Medical Disclaimer:</strong> This tool is for educational purposes only and is NOT a substitute for professional medical diagnosis. Always consult a dermatologist for proper evaluation.</p>
+        </div>
+
+        <!-- ─── Header ─── -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-microscope"></i>
+                <h1>Skin Cancer Detector</h1>
+            </div>
+            <p class="subtitle">AI-Powered Early Detection System</p>
+            <div class="stats">
+                <div class="stat-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Binary Classification</span>
+                </div>
+                <div class="stat-item">
+                    <i class="fas fa-brain"></i>
+                    <span>Deep Learning Model</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- ─── Main Content ─── -->
+        <main class="main-content">
+            <!-- ─── Instructions Panel ─── -->
+            <div class="instructions-panel">
+                <h3><i class="fas fa-info-circle"></i> How to Use</h3>
+                <ol>
+                    <li><strong>Capture Image:</strong> Take a clear photo of the skin lesion in good lighting</li>
+                    <li><strong>Upload:</strong> Drag & drop or browse to select the image</li>
+                    <li><strong>Analyze:</strong> Click "Analyze Lesion" for AI prediction</li>
+                    <li><strong>Review:</strong> Check results and follow recommendations</li>
+                </ol>
+                <div class="warning-box">
+                    <i class="fas fa-camera"></i>
+                    <p><strong>Image Tips:</strong> Ensure the lesion is in focus, well-lit, and fills most of the frame. Avoid shadows and blurry images.</p>
+                </div>
+            </div>
+
+            <!-- ─── Upload Section ─── -->
+            <div class="upload-section">
+                <div class="upload-area" id="dropZone">
+                    <div class="upload-content" id="uploadContent">
+                        <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                        <h3>Upload Skin Lesion Image</h3>
+                        <p>Drag & drop your image here</p>
+                        <label for="fileInput" class="upload-btn">
+                            <i class="fas fa-folder-open"></i> Browse Files
+                        </label>
+                        <input type="file" id="fileInput" accept="image/*" hidden>
+                        <p class="file-info">Supports: JPG, PNG, WEBP (Max 10MB)</p>
+                    </div>
+
+                    <!-- Image Preview -->
+                    <div class="preview-container" id="previewContainer" style="display:none;">
+                        <img id="previewImage" src="" alt="Lesion Preview">
+                        <button class="remove-btn" id="removeBtn" title="Remove Image">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Analyze Button -->
+                <button class="predict-btn" id="predictBtn" disabled>
+                    <i class="fas fa-search-plus"></i>
+                    <span>Analyze Lesion</span>
+                </button>
+            </div>
+
+            <!-- ─── Results Section ─── -->
+            <div class="results-section" id="resultsSection" style="display:none;">
+                <h2><i class="fas fa-chart-line"></i> Analysis Results</h2>
+                
+                <!-- Main Prediction Card -->
+                <div class="main-result" id="mainResult">
+                    <div class="result-icon" id="resultIcon">
+                        <i class="fas fa-question"></i>
+                    </div>
+                    <div class="result-content">
+                        <div class="result-label" id="resultLabel">--</div>
+                        <div class="result-confidence" id="resultConfidence">--</div>
+                        <div class="risk-badge" id="riskBadge">--</div>
+                    </div>
+                </div>
+
+                <!-- Recommendation Box -->
+                <div class="recommendation-box" id="recommendationBox">
+                    <i class="fas fa-user-md"></i>
+                    <div>
+                        <strong>Medical Recommendation:</strong>
+                        <p id="recommendationText">--</p>
+                    </div>
+                </div>
+
+                <!-- Probability Breakdown -->
+                <div class="probability-section">
+                    <h3><i class="fas fa-percent"></i> Confidence Breakdown</h3>
+                    <div class="probability-bars" id="probabilityBars">
+                        <!-- Dynamically populated -->
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                    <button class="action-btn secondary" id="newAnalysisBtn">
+                        <i class="fas fa-redo"></i> New Analysis
+                    </button>
+                    <button class="action-btn primary" id="saveResultBtn">
+                        <i class="fas fa-download"></i> Save Results
+                    </button>
+                </div>
+            </div>
+
+            <!-- ─── Loading Overlay ─── -->
+            <div class="loading-overlay" id="loadingOverlay" style="display:none;">
+                <div class="spinner"></div>
+                <p>Analyzing skin lesion...</p>
+                <small>Please wait while our AI examines the image</small>
+            </div>
+
+            <!-- ─── Error Message ─── -->
+            <div class="error-message" id="errorMessage" style="display:none;">
+                <i class="fas fa-exclamation-circle"></i>
+                <div>
+                    <strong>Error</strong>
+                    <p id="errorText"></p>
+                </div>
+            </div>
+        </main>
+
+        <!-- ─── Model Info ─── -->
+        <div class="model-info" id="modelInfo">
+            <h3><i class="fas fa-cog"></i> Model Information</h3>
+            <div id="modelDetails">
+                <div class="model-detail">
+                    <span>Status</span>
+                    <span class="loading-text">Connecting...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── Educational Section ─── -->
+        <div class="education-section">
+            <h3><i class="fas fa-book-medical"></i> About Skin Cancer Detection</h3>
+            <div class="education-grid">
+                <div class="edu-card">
+                    <i class="fas fa-eye"></i>
+                    <h4>Early Detection</h4>
+                    <p>Early detection of skin cancer significantly increases treatment success rates to over 95%.</p>
+                </div>
+                <div class="edu-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h4>AI Assistance</h4>
+                    <p>This AI model analyzes visual patterns to assist in identifying potentially malignant lesions.</p>
+                </div>
+                <div class="edu-card">
+                    <i class="fas fa-stethoscope"></i>
+                    <h4>Professional Care</h4>
+                    <p>Always consult a dermatologist for definitive diagnosis and treatment planning.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ─── Footer ─── -->
+        <footer class="footer">
+            <p>
+                <i class="fas fa-heartbeat"></i> 
+                Medical AI Tool | Powered by TensorFlow & Deep Learning<br>
+                <small>For research and educational purposes only</small>
+            </p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
